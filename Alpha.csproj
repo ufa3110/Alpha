@@ -17,7 +17,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\..\PoeHelper\Plugins\Compiled\Alpha\</OutputPath>
+    <OutputPath>..\..\..\..\PoeHelper\Plugins\Compiled\Alpha\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -37,27 +37,31 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="ExileCore">
+      <HintPath>..\..\..\..\PoeHelper\ExileCore.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="EpPathFinding.cs">
       <HintPath>lib\EpPathFinding.cs.dll</HintPath>
     </Reference>
     <Reference Include="GameOffsets">
-      <HintPath>..\..\..\PoeHelper\GameOffsets.dll</HintPath>
+      <HintPath>..\..\..\..\PoeHelper\GameOffsets.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="SharpDX">
-      <HintPath>..\..\..\PoeHelper\SharpDX.dll</HintPath>
+      <HintPath>..\..\..\..\PoeHelper\SharpDX.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="SharpDX.Direct3D11">
-      <HintPath>..\..\..\PoeHelper\SharpDX.Direct3D11.dll</HintPath>
+      <HintPath>..\..\..\..\PoeHelper\SharpDX.Direct3D11.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="SharpDX.DXGI">
-      <HintPath>..\..\..\PoeHelper\SharpDX.DXGI.dll</HintPath>
+      <HintPath>..\..\..\..\PoeHelper\SharpDX.DXGI.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="SharpDX.Mathematics">
-      <HintPath>..\..\..\PoeHelper\SharpDX.Mathematics.dll</HintPath>
+      <HintPath>..\..\..\..\PoeHelper\SharpDX.Mathematics.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="System" />
@@ -76,13 +80,6 @@
     <Compile Include="AlphaSettings.cs" />
     <Compile Include="TaskNode.cs" />
     <Compile Include="TaskNodeType.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\Core\Core.csproj">
-      <Project>{5539d732-34a7-44ab-9e28-116c3429b12a}</Project>
-      <Name>Core</Name>
-      <Private>False</Private>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
