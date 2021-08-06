@@ -1,18 +1,10 @@
 ﻿using System;
-using System.Runtime.InteropServices;
 using ExileCore;
 using ExileCore.PoEMemory.Components;
 using ExileCore.PoEMemory.MemoryObjects;
-using ExileCore.Shared.Cache;
 using SharpDX;
-using SharpDX.Direct3D11;
-using SharpDX.DXGI;
 using System.Collections.Generic;
-using System.Diagnostics;
-using Map = ExileCore.PoEMemory.Elements.Map;
-using EpPathFinding.cs;
 using System.Linq;
-using System.IO;
 using System.Threading;
 using System.Drawing;
 
