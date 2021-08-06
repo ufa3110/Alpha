@@ -20,6 +20,7 @@ namespace Alpha
 
         private const int MovementDelay = 10;
         private const int ClickDelay = 1;
+        
 
         [DllImport("user32.dll")]
         public static extern bool SetCursorPos(int x, int y);
@@ -57,15 +58,6 @@ namespace Alpha
         ///     Retrieves the cursor's position, in screen coordinates.
         /// </summary>
         /// <see>See MSDN documentation for further information.</see>
-        [DllImport("user32.dll")]
-        public static extern bool GetCursorPos(out Point lpPoint);
-
-        public static SharpDX.Point GetCursorPosition()
-        {
-            GetCursorPos(out var lpPoint);
-            return lpPoint;
-        }
-
         public static void LeftMouseDown()
         {
             mouse_event(MouseeventfLeftdown, 0, 0, 0, 0);
@@ -152,41 +144,6 @@ namespace Alpha
             SetCursorPos((int)x, (int)y);
         }
 
-        public static Vector2 GetCursorPositionVector()
-        {
-            var currentMousePoint = GetCursorPosition();
-            return new Vector2(currentMousePoint.X, currentMousePoint.Y);
-        }
-
-        public static void SetCursorPosition(Vector2 end)
-        {
-            var cursor = GetCursorPositionVector();
-            var stepVector2 = new Vector2();
-            var step = (float)Math.Sqrt(Vector2.Distance(cursor, end)) * 1.618f;
-            if (step > 275) step = 240;
-            stepVector2.X = (end.X - cursor.X) / step;
-            stepVector2.Y = (end.Y - cursor.Y) / step;
-            var fX = cursor.X;
-            var fY = cursor.Y;
-
-            for (var j = 0; j < step; j++)
-            {
-                fX += +stepVector2.X;
-                fY += stepVector2.Y;
-                SetCursorPosition(fX, fY);
-                Thread.Sleep(2);
-            }
-        }
-
-        public static void SetCursorPosAndLeftClickHuman(Vector2 coords, int extraDelay)
-        {
-            SetCursorPosition(coords);
-            Thread.Sleep(MovementDelay + extraDelay);
-            LeftMouseDown();
-            Thread.Sleep(MovementDelay + extraDelay);
-            LeftMouseUp();
-        }
-
         public static void SetCursorPos(Vector2 vec)
         {
             SetCursorPos((int)vec.X, (int)vec.Y);
@@ -199,35 +156,38 @@ namespace Alpha
         }
 
         public static float SpeedMouse = 1;
-
-        public static IEnumerator SetCursorPosHuman(Vector2 vec)
+        
+        public static void SetCursorPosHuman2(Vector2 targetPos)
         {
-            var step = (float)Math.Sqrt(Vector2.Distance(GetCursorPositionVector(), vec)) * SpeedMouse / 20;
+            // Keep Curser Away from Screen Edges to prevent UI Interaction.
+            var windowRect = AlphaCore.instance.GameController.Window.GetWindowRectangle();
+            var edgeBoundsX = windowRect.Size.Width / 4;
+            var edgeBoundsY = windowRect.Size.Height / 4;
+
+            if (targetPos.X <= windowRect.Left + edgeBoundsX ) targetPos.X = windowRect.Left + edgeBoundsX;
+            if (targetPos.Y <= windowRect.Top + edgeBoundsY) targetPos.Y = windowRect.Left + edgeBoundsY;
+            if (targetPos.X >= windowRect.Right - edgeBoundsX) targetPos.X = windowRect.Right -edgeBoundsX;
+            if (targetPos.Y >= windowRect.Bottom - edgeBoundsY) targetPos.Y = windowRect.Bottom - edgeBoundsY;
+            
+            var step = (float)Math.Sqrt(Vector2.Distance(AlphaCore.instance.GetMousePosition(), targetPos)) * SpeedMouse / 20;
 
             if (step > 6)
                 for (var i = 0; i < step; i++)
                 {
-                    var vector2 = Vector2.SmoothStep(GetCursorPositionVector(), vec, i / step);
-                    SetCursorPos((int)vector2.X, (int)vector2.Y);
-                    yield return new WaitTime(1);
-                }
-            else
-                SetCursorPos(vec);
-        }
-
-        public static void SetCursorPosHuman2(Vector2 vec)
-        {
-            var step = (float)Math.Sqrt(Vector2.Distance(GetCursorPositionVector(), vec)) * SpeedMouse / 20;
-
-            if (step > 6)
-                for (var i = 0; i < step; i++)
-                {
-                    var vector2 = Vector2.SmoothStep(GetCursorPositionVector(), vec, i / step);
+                    var vector2 = Vector2.SmoothStep(AlphaCore.instance.GetMousePosition(), targetPos, i / step);
                     SetCursorPos((int)vector2.X, (int)vector2.Y);
                     Thread.Sleep(5);
                 }
             else
-                SetCursorPos(vec);
+                SetCursorPos(targetPos);
+        }
+        public static void SetCursorPosAndLeftClickHuman(Vector2 coords, int extraDelay)
+        {
+            SetCursorPos(coords);
+            Thread.Sleep(MovementDelay + extraDelay);
+            LeftMouseDown();
+            Thread.Sleep(MovementDelay + extraDelay);
+            LeftMouseUp();
         }
 
         public static IEnumerator LeftClick()
