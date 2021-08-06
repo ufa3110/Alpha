@@ -1,17 +1,10 @@
 ﻿using System;
-using System.Runtime.InteropServices;
 using ExileCore;
 using ExileCore.PoEMemory.Components;
 using ExileCore.PoEMemory.MemoryObjects;
-using ExileCore.Shared.Cache;
 using SharpDX;
-using SharpDX.Direct3D11;
-using SharpDX.DXGI;
 using System.Collections.Generic;
-using Map = ExileCore.PoEMemory.Elements.Map;
-using EpPathFinding.cs;
 using System.Linq;
-using System.IO;
 using System.Threading;
 using System.Drawing;
 
@@ -26,6 +19,7 @@ namespace Alpha
 	/// </summary>
 	internal class AlphaCore : BaseSettingsPlugin<AlphaSettings>
 	{
+		internal static AlphaCore instance;
 		private Random random = new Random();
 		private Camera Camera => GameController.Game.IngameState.Camera;		
 		private Dictionary<uint, Entity> _areaTransitions = new Dictionary<uint, Entity>();
@@ -42,9 +36,16 @@ namespace Alpha
 
 		private int _numRows, _numCols;
 		private byte[,] _tiles;
+		
+		internal Vector2 GetMousePosition()
+		{
+			return new Vector2(GameController.IngameState.MousePosX, GameController.IngameState.MousePosY);
+		}
+
 		public AlphaCore()
 		{
 			Name = "Alpha";
+			
 		}
 
 		public override bool Initialise()
@@ -53,6 +54,7 @@ namespace Alpha
 
 			Input.RegisterKey(Settings.ToggleFollower.Value);
 			Settings.ToggleFollower.OnValueChanged += () => { Input.RegisterKey(Settings.ToggleFollower.Value); };
+			instance = this;
 
 			return base.Initialise();
 		}
@@ -247,7 +249,7 @@ namespace Alpha
 						_tasks.FirstOrDefault(I => I.Type == TaskNodeType.Loot) == null)
 						_tasks.Add(new TaskNode(questLoot.Pos, Settings.ClearPathDistance, TaskNodeType.Loot));
 
-					else if (!_hasUsedWP)
+					else if (!_hasUsedWP && Settings.TakeWaypoints)
 					{
 						//Check if there's a waypoint nearby
 						var waypoint = GameController.EntityListWrapper.Entities.SingleOrDefault(I => I.Type == ExileCore.Shared.Enums.EntityType.Waypoint &&

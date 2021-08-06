@@ -20,6 +20,10 @@ namespace Alpha
 		[Menu("Allow Dash")] public ToggleNode IsDashEnabled { get; set; } = new ToggleNode(true);
 		[Menu("Dash Key")] public HotkeyNode DashKey { get; set; } = Keys.W;
 		[Menu("Follow Close")] public ToggleNode IsCloseFollowEnabled { get; set; } = new ToggleNode(false);
+		
+		[Menu("Take Waypoints")] public ToggleNode TakeWaypoints { get; set; } = new ToggleNode(true);
+		
+		
 
 	}
 }
