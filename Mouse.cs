@@ -9,7 +9,7 @@ namespace Alpha
     { 
     public class Mouse
     {
-        public const int MOUSEEVENTF_MOVE = 0x0001;
+        public const int MouseeventfMove = 0x0001;
         public const int MouseeventfLeftdown = 0x02;
         public const int MouseeventfLeftup = 0x04;
         public const int MouseeventfMiddown = 0x0020;
@@ -155,7 +155,7 @@ namespace Alpha
             MouseMove();
         }
 
-        public static float SpeedMouse = 1;
+        public static float speedMouse = 1;
         
         public static void SetCursorPosHuman2(Vector2 targetPos)
         {
@@ -169,7 +169,7 @@ namespace Alpha
             if (targetPos.X >= windowRect.Right - edgeBoundsX) targetPos.X = windowRect.Right -edgeBoundsX;
             if (targetPos.Y >= windowRect.Bottom - edgeBoundsY) targetPos.Y = windowRect.Bottom - edgeBoundsY;
             
-            var step = (float)Math.Sqrt(Vector2.Distance(AlphaCore.instance.GetMousePosition(), targetPos)) * SpeedMouse / 20;
+            var step = (float)Math.Sqrt(Vector2.Distance(AlphaCore.instance.GetMousePosition(), targetPos)) * speedMouse / 20;
 
             if (step > 6)
                 for (var i = 0; i < step; i++)
@@ -199,7 +199,7 @@ namespace Alpha
 
         public static void MouseMove()
         {
-            mouse_event(MOUSEEVENTF_MOVE, 0, 0, 0, 0);
+            mouse_event(MouseeventfMove, 0, 0, 0, 0);
         }
 
         #endregion
