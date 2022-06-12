@@ -472,10 +472,9 @@ namespace Alpha
 			try
 			{
 				return GameController.Entities
-					.Where(x => x.Type == ExileCore.Shared.Enums.EntityType.Player)
-					.FirstOrDefault(x => x.GetComponent<Player>().PlayerName.ToLower() == leaderName);
+					.Where(x => x.Type == ExileCore.Shared.Enums.EntityType.Player && x.GetComponent<Player>().PlayerName.ToLower() == leaderName)
+					.FirstOrDefault();
 			}
-			// Sometimes we can get "Collection was modified; enumeration operation may not execute" exception
 			catch
 			{
 				return null;
